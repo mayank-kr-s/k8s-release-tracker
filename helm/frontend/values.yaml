@@ -9,7 +9,7 @@ replicaCount: 1
 image:
   repository: mnk30/frontend
   # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "481276e7ddfdfdecffa85c6aa2b6bf6d54210621"
 
@@ -51,10 +51,9 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  type: ClusterIP 
+  port: 80        # The frontend service listens on 80
+  targetPort: 8080 # But it routes traffic to our secure Nginx container on 8080!
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -127,11 +126,15 @@ resources: {}
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

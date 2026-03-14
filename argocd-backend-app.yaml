@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: release-tracker-backend
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  source:
+    path: helm/backend
+    repoURL: https://github.com/mayank-kr-s/k8s-release-tracker.git
+    targetRevision: main
+    helm:
+      valueFiles: []
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true

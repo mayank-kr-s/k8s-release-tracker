@@ -29,7 +29,6 @@ public class DeploymentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DeploymentRecord createDeployment(@Valid @RequestBody DeploymentRecord record) {
-        // 3. ADD THIS LOG STATEMENT
         log.info("Received new deployment simulation for App: {} in Env: {}", 
                  record.getApplicationName(), record.getEnvironment());
         
